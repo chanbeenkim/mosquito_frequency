@@ -11,6 +11,22 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _controller = SoundController();
 
+  bool isRunning = false;
+
+  void onStartPressed() async {
+    await _controller.play();
+    setState(() {
+      isRunning = true;
+    });
+  }
+
+  void onStopPressed() async {
+    await _controller.stop();
+    setState(() {
+      isRunning = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,22 +63,10 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               IconButton(
                 iconSize: 80,
-                onPressed: () async {
-                  await _controller.play();
-                },
+                onPressed: isRunning ? onStopPressed : onStartPressed,
                 icon: Icon(
-                  Icons.play_circle_fill,
+                  isRunning ? Icons.stop_circle : Icons.play_circle_fill,
                   color: Colors.red.shade700,
-                ),
-              ),
-              IconButton(
-                iconSize: 80,
-                onPressed: () async {
-                  await _controller.stop();
-                },
-                icon: const Icon(
-                  Icons.stop_circle,
-                  color: Colors.black,
                 ),
               ),
             ],
